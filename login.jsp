@@ -1,31 +1,40 @@
-<%@ page contentType="text/html; charset=gb2312"%>
-<%
-    request.setCharacterEncoding("gb2312");
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<html>
+<head>
+<title>life.jsp</title>
+</head>
+<body>
+
+<%! 
+  private int initVar=0;
+  private int serviceVar=0;
+  private int destroyVar=0;
 %>
-<form action="login.jsp" method="post">
-    用户名：<input type="text" name="username" />
-    <br />
-    <input type="submit" value="登录" />
-</form>
-<%@ page import="java.util.*"%>
-<%
-    request.setCharacterEncoding("gb2312");
-
-    // 取得登录的用户名
-    String username = request.getParameter("username");
-
-    // 把用户名保存进session
-    session.setAttribute("username", username);
-
-    // 把用户名放入在线列表
-    List onlineUserList = (List) application.getAttribute("onlineUserList");
-    // 第一次使用前，需要初始化
-    if (onlineUserList == null) {
-        onlineUserList = new ArrayList();
-        application.setAttribute("onlineUserList", onlineUserList);
-    }
-    onlineUserList.add(username);
-
-    // 成功
-    response.sendRedirect("result.jsp");
+  
+<%!
+  public void jspInit(){
+    initVar++;
+    System.out.println("jspInit(): JSP被初始化了"+initVar+"次");
+  }
+  public void jspDestroy(){
+    destroyVar++;
+    System.out.println("jspDestroy(): JSP被销毁了"+destroyVar+"次");
+  }
 %>
+
+<%
+  serviceVar++;
+  System.out.println("_jspService(): JSP共响应了"+serviceVar+"次请求");
+
+  String content1="初始化次数 : "+initVar;
+  String content2="响应客户请求次数 : "+serviceVar;
+  String content3="销毁次数 : "+destroyVar;
+%>
+<h1>菜鸟教程 JSP 测试实例</h1>
+<p><%=content1 %></p>
+<p><%=content2 %></p>
+<p><%=content3 %></p>
+
+</body>
+</html>
